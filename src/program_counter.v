@@ -4,8 +4,7 @@ module program_counter(clock, mux_in, pc);
     input [31:0] mux_in; 
     output reg [31:0] pc;
     
-    always@(posedge clock)begin 
-        pc = mux_in;
+    always @(posedge clock) begin
+         pc <= mux_in;
     end
 endmodule
-

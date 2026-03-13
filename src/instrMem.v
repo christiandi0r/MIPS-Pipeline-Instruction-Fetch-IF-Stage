@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 
-module instrMem(clk, rst, addr, data);
+module instrMem(clk, rst, addr, instr_out);
     input clk, rst;
     input [31:0] addr;
-    output reg [31:0] data;
+    output wire [31:0] instr_out;
 
     // 32-bit wide, depth 2^32 words
-    reg [31:0] mem [0:(2**32)-1];
+    reg [31:0] mem [0:63];
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
@@ -20,9 +20,10 @@ module instrMem(clk, rst, addr, data);
             mem[7] <= 32'h70000077;  // address 28
             mem[8] <= 32'h80000088;  // address 32
             mem[9] <= 32'h90000099;  // address 36
-        end
-        else begin
-            data <= mem[addr >> 2];
+            
         end
     end
+     
+    assign instr_out = (rst) ? 32'h00000000 : mem[addr >> 2];
+    
 endmodule

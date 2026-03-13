@@ -8,8 +8,8 @@ module ifIdLatch(clk, rst, pc_in, instr_in, pc_out, instr_out);
     always @(posedge clk or posedge rst) begin
         if (rst)
             begin
-                pc_out    <= 32'b0;
-                instr_out <= 32'b0;
+                pc_out    <= 32'd0;
+                instr_out <= 32'd0;
             end
         else
             begin

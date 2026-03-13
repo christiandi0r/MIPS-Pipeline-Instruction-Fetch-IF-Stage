@@ -4,11 +4,13 @@ module fetch(
 
     input wire clk,
     input wire rst,
-    input wire ex_mem_pc_src,
-    input wire [31:0] ex_mem_npc,
+    input wire PC_src,
+    
+    
+    input wire [31:0] PC_from_ExMem,
     
     output wire [31:0] if_id_instr,
-    output wire [31:0] if_id_npc
+    output wire [31:0] if_id_pc
 );
 
 // internal wires
@@ -19,16 +21,15 @@ wire [31:0] instr_data;
 
 // MUX
 mux m0(
-    .a_true(ex_mem_npc),
+    .a_true(PC_from_ExMem),
     .b_false(next_pc),
-    .sel(ex_mem_pc_src),
+    .sel(PC_src),
     .y(pc_mux)
 );
 
 // PROGRAM COUNTER
 program_counter pc0(
-    .clock(clk),
-    .mux_in(pc_mux),
+    .clock(clk), .mux_in(pc_mux),
     .pc(pc_out)
 );
 
@@ -38,12 +39,13 @@ adder in0(
     .adder_out(next_pc)
 );
 
+
 // INSTRUCTION MEMORY
 instrMem inMem0(
     .clk(clk),
     .rst(rst),
     .addr(pc_out),
-    .data(instr_data)
+    .instr_out(instr_data)
 );
 
 // IF/ID LATCH
@@ -52,8 +54,10 @@ ifIdLatch ifIdLatch0(
     .rst(rst),
     .pc_in(next_pc),
     .instr_in(instr_data),
-    .pc_out(if_id_npc),
+    .pc_out(if_id_pc),
     .instr_out(if_id_instr)
 );
+
+
 
 endmodule
