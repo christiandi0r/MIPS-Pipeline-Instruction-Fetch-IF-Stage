@@ -6,7 +6,7 @@ module instrMem(clk, rst, addr, instr_out);
     output wire [31:0] instr_out;
 
     // 32-bit wide, depth 2^32 words
-    reg [31:0] mem [0:63];
+    reg [31:0] mem [0:2**32-1];
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
